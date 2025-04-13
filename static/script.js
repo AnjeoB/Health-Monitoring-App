@@ -95,12 +95,22 @@ function signUpUser() {
 function submitMetrics() {
     console.log("Submit Metrics button clicked!");
 
+    // Retrieve and parse input values
     const heartRate = parseInt(document.getElementById("heartRate").value.trim());
     const temperature = parseFloat(document.getElementById("temperature").value.trim());
     const steps = parseInt(document.getElementById("steps").value.trim());
 
-    if (!heartRate || !temperature || !steps) {
-        alert("Please fill in all fields.");
+    // Validation
+    if (isNaN(heartRate) || heartRate < 30 || heartRate > 250) {
+        alert("Please enter a valid heart rate between 30 and 250 bpm.");
+        return;
+    }
+    if (isNaN(temperature) || temperature < 35 || temperature > 42) {
+        alert("Please enter a valid body temperature between 35°C and 42°C.");
+        return;
+    }
+    if (isNaN(steps) || steps < 0) {
+        alert("Please enter a valid number of steps (0 or higher).");
         return;
     }
 
@@ -114,6 +124,15 @@ function submitMetrics() {
     .then(response => response.json())
     .then(data => {
         if (data.success) {
+            // Display confirmation banner
+            const banner = document.getElementById("confirmationBanner");
+            banner.style.display = "block"; // Show the banner
+
+            // Hide banner after 3 seconds
+            setTimeout(() => {
+                banner.style.display = "none";
+            }, 3000);
+
             // Clear previous feedback
             const dashboard = document.getElementById("userDashboard");
             const existingFeedback = document.querySelector("#userFeedback");
@@ -136,6 +155,26 @@ function submitMetrics() {
             responseDiv.style.color = "#007BFF";
 
             dashboard.appendChild(responseDiv);
+
+            // Update Submission History
+            const historyTableBody = document.getElementById("historyTableBody");
+            const newRow = document.createElement("tr");
+
+            // Add current date and time
+            const currentDate = new Date().toLocaleString();
+            newRow.innerHTML = `
+                <td>${currentDate}</td>
+                <td>${heartRate}</td>
+                <td>${temperature}</td>
+                <td>${steps}</td>
+            `;
+
+            historyTableBody.appendChild(newRow); // Append the new row to the table
+
+            // Clear input fields for fresh submission
+            document.getElementById("heartRate").value = "";
+            document.getElementById("temperature").value = "";
+            document.getElementById("steps").value = "";
         } else {
             alert(data.message || "Metrics submission failed.");
         }
@@ -144,6 +183,42 @@ function submitMetrics() {
         console.error("Error during metrics submission:", error);
         alert("Metrics submission failed. Please try again.");
     });
+}
+function generateReport() {
+    console.log("Generating report...");
+
+    // Retrieve the history table body
+    const historyTableBody = document.getElementById("historyTableBody");
+    const rows = historyTableBody.querySelectorAll("tr");
+
+    if (rows.length === 0) {
+        alert("No data available to generate a report.");
+        return;
+    }
+
+    // Compile report data
+    let reportContent = "Submission History Report\n\n";
+    reportContent += "Date\t\tHeart Rate (bpm)\tTemperature (°C)\tSteps\n";
+    reportContent += "---------------------------------------------------------------\n";
+
+    rows.forEach(row => {
+        const cells = row.querySelectorAll("td");
+        const date = cells[0].innerText;
+        const heartRate = cells[1].innerText;
+        const temperature = cells[2].innerText;
+        const steps = cells[3].innerText;
+
+        reportContent += `${date}\t${heartRate}\t\t${temperature}\t\t${steps}\n`;
+    });
+
+    // Download the report as a .txt file
+    const blob = new Blob([reportContent], { type: "text/plain" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "submission_report.txt";
+    link.click();
+
+    console.log("Report generated successfully!");
 }
 // Handle Forgot Password Navigation
 function showForgotPassword() {
