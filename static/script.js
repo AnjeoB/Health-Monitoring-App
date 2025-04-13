@@ -94,9 +94,9 @@ function signUpUser() {
 function submitMetrics() {
     console.log("Submit Metrics button clicked!");
 
-    const heartRate = document.getElementById("heartRate").value.trim();
-    const temperature = document.getElementById("temperature").value.trim();
-    const steps = document.getElementById("steps").value.trim();
+    const heartRate = parseInt(document.getElementById("heartRate").value.trim());
+    const temperature = parseFloat(document.getElementById("temperature").value.trim());
+    const steps = parseInt(document.getElementById("steps").value.trim());
 
     if (!heartRate || !temperature || !steps) {
         alert("Please fill in all fields.");
@@ -110,21 +110,32 @@ function submitMetrics() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, metrics: { heart_rate: heartRate, temperature, steps } })
     })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error("Metrics submission failed.");
-        }
-        return response.json();
-    })
+    .then(response => response.json())
     .then(data => {
-        alert(data.message || "Metrics submitted successfully!");
+        if (data.success) {
+            // Determine health status
+            const healthStatus = determineHealthStatus(heartRate, temperature, steps);
+
+            // Display response on screen
+            const responseDiv = document.createElement("div");
+            responseDiv.textContent = `Hello ${username}, ${healthStatus}`;
+            responseDiv.style.marginTop = "20px";
+            responseDiv.style.padding = "10px";
+            responseDiv.style.border = "1px solid #007BFF";
+            responseDiv.style.borderRadius = "5px";
+            responseDiv.style.backgroundColor = "#EAF4FC";
+            responseDiv.style.color = "#007BFF";
+
+            document.getElementById("userDashboard").appendChild(responseDiv);
+        } else {
+            alert(data.message || "Metrics submission failed.");
+        }
     })
     .catch(error => {
         console.error("Error during metrics submission:", error);
         alert("Metrics submission failed. Please try again.");
     });
 }
-
 // Handle Forgot Password Navigation
 function showForgotPassword() {
     console.log("Navigating to Forgot Password form...");
@@ -154,4 +165,36 @@ function logout() {
     console.log("Logout button clicked!");
     alert("You have been logged out.");
     showLogin(); // Redirect to the login page
+}
+function determineHealthStatus(heartRate, temperature, steps) {
+    let statusMessage = "";
+
+    // Heart Rate Feedback
+    if (heartRate < 60) {
+        statusMessage += "Your heart rate is low. Consider consulting a healthcare provider. ";
+    } else if (heartRate > 100) {
+        statusMessage += "Your heart rate is elevated. You might want to rest or check your activity levels. ";
+    } else {
+        statusMessage += "Your heart rate is normal. Great job! ";
+    }
+
+    // Temperature Feedback
+    if (temperature < 36) {
+        statusMessage += "Your body temperature is low. Stay warm and monitor for symptoms of hypothermia. ";
+    } else if (temperature > 37.2) {
+        statusMessage += "You have a fever. Rest and consider seeking medical advice. ";
+    } else {
+        statusMessage += "Your body temperature is normal. Keep it steady! ";
+    }
+
+    // Steps Feedback
+    if (steps < 5000) {
+        statusMessage += "Your activity level is sedentary. Aim for more physical activity during the day. ";
+    } else if (steps > 10000) {
+        statusMessage += "Excellent! You’re maintaining an active lifestyle. Keep it up!";
+    } else {
+        statusMessage += "You’re moderately active. Good work—try to push a little more for optimal health!";
+    }
+
+    return statusMessage;
 }
