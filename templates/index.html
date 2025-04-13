@@ -127,31 +127,33 @@
             <p><a href="#" onclick="showForgotPassword()">Forgot Password?</a></p>
             <p><a href="#" onclick="showSignUp()">Don’t have an account? Sign Up</a></p>
         </div>
-<!-- Forgot Password Form -->
-<div id="forgotPasswordForm" class="form-container">
-    <h2>Forgot Password</h2>
-    <form>
-        <label for="resetUsername">Username:</label>
-        <input type="text" id="resetUsername" required>
-        <label for="newPassword">New Password:</label>
-        <input type="password" id="newPassword" required>
-        <button type="button" onclick="resetPassword()">Reset Password</button>
-    </form>
-    <p><a href="#" onclick="showLogin()">Back to Login</a></p>
-</div>
 
-<!-- Sign-Up Form -->
-<div id="signUpForm" class="form-container">
-    <h2>Create an Account</h2>
-    <form>
-        <label for="signupUsername">Username:</label>
-        <input type="text" id="signupUsername" required>
-        <label for="signupPassword">Password:</label>
-        <input type="password" id="signupPassword" required>
-        <button type="button" onclick="signUpUser()">Sign Up</button>
-    </form>
-    <p><a href="#" onclick="showLogin()">Back to Login</a></p>
-</div>
+        <!-- Forgot Password Form -->
+        <div id="forgotPasswordForm" class="form-container">
+            <h2>Forgot Password</h2>
+            <form>
+                <label for="resetUsername">Username:</label>
+                <input type="text" id="resetUsername" required>
+                <label for="newPassword">New Password:</label>
+                <input type="password" id="newPassword" required>
+                <button type="button" onclick="resetPassword()">Reset Password</button>
+            </form>
+            <p><a href="#" onclick="showLogin()">Back to Login</a></p>
+        </div>
+
+        <!-- Sign-Up Form -->
+        <div id="signUpForm" class="form-container">
+            <h2>Create an Account</h2>
+            <form>
+                <label for="signupUsername">Username:</label>
+                <input type="text" id="signupUsername" required>
+                <label for="signupPassword">Password:</label>
+                <input type="password" id="signupPassword" required>
+                <button type="button" onclick="signUpUser()">Sign Up</button>
+            </form>
+            <p><a href="#" onclick="showLogin()">Back to Login</a></p>
+        </div>
+
         <!-- Dashboard -->
         <div id="userDashboard" class="form-container">
             <h2 id="welcomeMessage"></h2>
@@ -164,7 +166,6 @@
                 <input type="number" id="steps" required>
                 <button type="button" onclick="submitMetrics()">Submit Metrics</button>
             </form>
-            <!-- Centered Back and Logout Buttons -->
             <div class="button-container">
                 <button type="button" class="back-button" onclick="goBack()">Back</button>
                 <button type="button" class="logout-button" onclick="logout()">Logout</button>

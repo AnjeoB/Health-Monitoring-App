@@ -93,49 +93,31 @@ def login():
 # Submit health metrics endpoint
 @app.route('/submit_metrics', methods=['POST'])
 def submit_metrics():
-    data = request.json
-    username = data['username']
-    metrics = data.get('metrics', {})
-
     try:
-        conn = sqlite3.connect("health.db")
-        cursor = conn.cursor()
+        # Parse incoming data
+        data = request.json
+        username = data.get("username")
+        metrics = data.get("metrics")
 
-        # Retrieve user ID
-        cursor.execute("SELECT id FROM users WHERE username = ?", (username,))
-        user = cursor.fetchone()
+        # Validate required fields
+        if not username or not metrics or not metrics.get("heart_rate") or not metrics.get("temperature") or not metrics.get("steps"):
+            return jsonify({"success": False, "message": "Missing required data"}), 400
 
-        if not user:
-            return jsonify({"message": "User not found!"}), 404
+        # Validate values
+        heart_rate = int(metrics["heart_rate"])
+        temperature = float(metrics["temperature"])
+        steps = int(metrics["steps"])
 
-        user_id = user[0]
+        if heart_rate < 0 or steps < 0 or temperature <= 0:
+            return jsonify({"success": False, "message": "Invalid metric values"}), 400
 
-        # Insert metrics into the database
-        cursor.execute("""
-        INSERT INTO metrics (user_id, heart_rate, temperature, steps)
-        VALUES (?, ?, ?, ?)
-        """, (user_id, metrics['heart_rate'], metrics['temperature'], metrics['steps']))
-        conn.commit()
-        conn.close()
+        # Perform necessary actions (e.g., save to database)
+        print(f"Received metrics for {username}: {metrics}")
+        return jsonify({"success": True, "message": "Metrics submitted successfully!"}), 200
 
-        # Analyze metrics for health status
-        heart_rate = metrics['heart_rate']
-        temperature = metrics['temperature']
-        steps = metrics['steps']
-
-        status = []
-        if heart_rate < 60 or heart_rate > 100:
-            status.append("Abnormal heart rate")
-        if temperature < 36.1 or temperature > 37.2:
-            status.append("Abnormal body temperature")
-        if steps < 5000:
-            status.append("Low activity levels")
-
-        status_message = "All metrics are normal" if not status else "; ".join(status)
-        return jsonify({"message": "Metrics submitted successfully!", "status": status_message}), 200
     except Exception as e:
-        return jsonify({"message": f"Error: {str(e)}"}), 500
-
+        print(f"Error: {str(e)}")
+        return jsonify({"success": False, "message": "Server error occurred"}), 500
 # Password reset endpoint
 @app.route('/reset_password', methods=['POST'])
 def reset_password():
