@@ -183,6 +183,8 @@ function submitMetrics() {
         console.error("Error during metrics submission:", error);
         alert("Metrics submission failed. Please try again.");
     });
+// Update the chart after adding data to the table
+updateChart();
 }
 function generateReport() {
     console.log("Generating report...");
@@ -302,3 +304,6 @@ function determineHealthStatus(heartRate, temperature, steps) {
 
     return statusMessage;
 }
+// Initialize the chart
+let metricsChart;
+
