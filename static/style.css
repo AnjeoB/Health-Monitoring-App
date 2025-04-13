@@ -1,164 +1,43 @@
-/* General body styling */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
+    overflow: hidden; /* No scrolling */
     background-color: #e3f2fd; /* Light blue background */
-    color: #212121; /* Dark text for readability */
 }
 
-/* Center the content */
-h1 {
-    text-align: center;
-    color: #1976d2; /* Dark blue for the title */
+#userDashboard {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Space out elements */
+    align-items: center;
+    height: 100vh; /* Fit everything into the viewport */
+    padding: 5px;
 }
 
-/* Form styling */
 form {
-    background-color: #ffffff; /* White form background */
-    border-radius: 8px; /* Rounded corners for a modern look */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow */
-    width: 400px; /* Form width */
-    margin: 50px auto; /* Center the form */
-    padding: 20px; /* Inner spacing */
-    text-align: left; /* Align labels and inputs */
-    transition: box-shadow 0.3s ease; /* Add hover transition */
+    width: 80%; /* Compact form width */
+    padding: 5px;
+    margin: 0;
+    font-size: 12px; /* Smaller font size */
+    background-color: #ffffff;
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* Add hover effect for the form */
-form:hover {
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Slightly deeper shadow */
+input, button {
+    font-size: 10px; /* Shrink input and button font size */
+    padding: 5px;
+    margin-bottom: 5px;
 }
 
-/* Label styling */
-label {
-    font-weight: bold;
-    display: block;
-    margin-bottom: 8px;
+#submissionHistory {
+    width: 80%; /* Reduce table width */
+    font-size: 10px; /* Shrink font size */
+    max-height: 20%; /* Shrink height */
+    overflow-y: hidden; /* Hide table overflow */
+    background-color: #ffffff;
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* Input fields styling */
-input {
-    width: calc(100% - 20px); /* Full width minus padding */
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #90caf9; /* Light blue border */
-    border-radius: 4px; /* Rounded corners */
-    font-size: 16px;
-    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); /* Inner shadow for depth */
-    transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transitions */
-}
-
-/* Highlight inputs on focus */
-input:focus {
-    border-color: #1976d2; /* Dark blue border */
-    box-shadow: 0 0 5px rgba(25, 118, 210, 0.5); /* Glow effect */
-    outline: none; /* Remove default focus outline */
-}
-
-/* Button styling */
-button {
-    background-color: #1976d2; /* Dark blue button */
-    color: #ffffff; /* White text */
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    font-size: 16px;
-    cursor: pointer;
-    width: 100%;
-    transition: background-color 0.3s, box-shadow 0.3s, transform 0.3s; /* Smooth transition */
-}
-
-/* Button hover effect */
-button:hover {
-    background-color: #1565c0; /* Slightly darker blue */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add shadow */
-    transform: translateY(-2px); /* Lift effect */
-}
-
-/* Response message styling */
-#responseMessage {
-    text-align: center;
-    margin-top: 20px;
-    font-size: 18px;
-    color: #1b5e20; /* Green text for success */
-}
-
-/* Login and Sign-Up forms container */
-#loginForm, #signUpForm {
-    width: 300px;
-    border: 1px solid #ccc;
-    padding: 20px;
-    border-radius: 10px;
-    background-color: #f9f9f9;
-    transition: opacity 0.3s ease, transform 0.3s ease; /* Smooth fade and scale effect */
-}
-
-/* Fade-in effect for active forms */
-.form-container {
-    display: none;
-    opacity: 0; /* Initially hidden */
-    transform: scale(0.95); /* Slightly smaller */
-    transition: opacity 0.5s ease, transform 0.5s ease; /* Smooth transition */
-}
-
-.form-container.active {
-    display: block;
-    opacity: 1; /* Fully visible */
-    transform: scale(1); /* Full size */
-}
-
-/* Heading styling */
-h2 {
-    text-align: center;
-    color: #333;
-}
-
-/* Enhance Feedback Styling */
-#userFeedback {
-    margin-top: 20px;
-    padding: 10px;
-    border: 1px solid #007BFF;
-    border-radius: 5px;
-    background-color: #EAF4FC;
-    color: #007BFF;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-}
-
-/* Submission History Table */
-#submissionHistory table {
-    width: 100%;
-    border-collapse: collapse; /* Merge borders */
-}
-
-#submissionHistory th, #submissionHistory td {
-    text-align: left;
-    padding: 8px;
-    border: 1px solid #ddd; /* Light border for clarity */
-}
-
-#submissionHistory th {
-    background-color: #1976d2; /* Blue header */
-    color: #fff; /* White text */
-}
-
-#submissionHistory tr:nth-child(even) {
-    background-color: #f3f3f3; /* Alternate row color */
-}
-#generateReport {
-    margin-top: 15px;
-    padding: 10px 20px;
-    background-color: #1b5e20; /* Green button */
-    color: #ffffff; /* White text */
-    border: none;
-    border-radius: 4px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-}
-
-#generateReport:hover {
-    background-color: #145a14; /* Darker green */
-    transform: translateY(-2px); /* Lift effect */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow on hover */
-}
