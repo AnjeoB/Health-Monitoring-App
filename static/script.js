@@ -1,3 +1,4 @@
+
 // Execute this when the DOM is fully loaded
 document.addEventListener("DOMContentLoaded", () => {
     showLogin(); // Default to the Login page
@@ -171,8 +172,28 @@ function goBack() {
 // Handle Logout Button Click
 function logout() {
     console.log("Logout button clicked!");
-    alert("You have been logged out.");
-    showLogin(); // Redirect to the login page
+
+    // Clear user-specific data
+    document.getElementById("welcomeMessage").textContent = ""; // Clear welcome message
+    document.getElementById("heartRate").value = ""; // Reset heart rate input
+    document.getElementById("temperature").value = ""; // Reset temperature input
+    document.getElementById("steps").value = ""; // Reset steps input
+
+    // Clear login inputs
+    document.getElementById("username").value = ""; // Clear username input
+    document.getElementById("password").value = ""; // Clear password input
+
+    // Remove feedback from the screen
+    const feedback = document.getElementById("userFeedback");
+    if (feedback) {
+        feedback.remove();
+    }
+
+    // Navigate back to the login form
+    showLogin();
+
+    // Notify the user
+    alert("You have been logged out, and all previous data has been cleared.");
 }
 function determineHealthStatus(heartRate, temperature, steps) {
     let statusMessage = "";
