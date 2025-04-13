@@ -113,11 +113,19 @@ function submitMetrics() {
     .then(response => response.json())
     .then(data => {
         if (data.success) {
+            // Clear previous feedback
+            const dashboard = document.getElementById("userDashboard");
+            const existingFeedback = document.querySelector("#userFeedback");
+            if (existingFeedback) {
+                existingFeedback.remove();
+            }
+
             // Determine health status
             const healthStatus = determineHealthStatus(heartRate, temperature, steps);
 
-            // Display response on screen
+            // Display new feedback
             const responseDiv = document.createElement("div");
+            responseDiv.id = "userFeedback"; // Unique ID for feedback section
             responseDiv.textContent = `Hello ${username}, ${healthStatus}`;
             responseDiv.style.marginTop = "20px";
             responseDiv.style.padding = "10px";
@@ -126,7 +134,7 @@ function submitMetrics() {
             responseDiv.style.backgroundColor = "#EAF4FC";
             responseDiv.style.color = "#007BFF";
 
-            document.getElementById("userDashboard").appendChild(responseDiv);
+            dashboard.appendChild(responseDiv);
         } else {
             alert(data.message || "Metrics submission failed.");
         }
